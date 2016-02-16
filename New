@@ -1,0 +1,4 @@
+<?php ?>
+
+<input type="file" name="files"/>
+<input type="submit" name="go"/>
