@@ -273,13 +273,14 @@ class ImageTest extends PHPUnit
         isContain('data:image/jpeg;base64,', $img->getBase64('jpeg'));
         isContain('data:image/jpeg;base64,', $img->getBase64('jpg'));
 
-        if (Sys::isPHP('7.2')) {
-            isContain('R0lGODlhEAAQAMYAAHB', $img->getBase64(null, null, false));
-            isContain('R0lGODlhEAAQAMYAAHB', $img->getBase64('gif', null, false));
-            isContain('iVBORw0KGgoAAAANSUh', $img->getBase64('png', null, false));
-            isContain('/9j/4AAQSkZJRgABAQ', $img->getBase64('jpeg', null, false));
-            isContain('/9j/4AAQSkZJRgABAQ', $img->getBase64('jpg', null, false));
-        }
+        // legacy
+        //if (Sys::isPHP('7.2')) {
+        //    isContain('R0lGODlhEAAQAMYAAHB', $img->getBase64(null, null, false));
+        //    isContain('R0lGODlhEAAQAMYAAHB', $img->getBase64('gif', null, false));
+        //    isContain('iVBORw0KGgoAAAANSUh', $img->getBase64('png', null, false));
+        //    isContain('/9j/4AAQSkZJRgABAQ', $img->getBase64('jpeg', null, false));
+        //    isContain('/9j/4AAQSkZJRgABAQ', $img->getBase64('jpg', null, false));
+        //}
     }
 
     public function testGetBinary()
