@@ -20,9 +20,9 @@ update: ##@Project Install/Update all 3rd party dependencies
 	$(call title,"Install/Update all 3rd party dependencies")
 	@echo "Composer flags: $(JBZOO_COMPOSER_UPDATE_FLAGS)"
 	@composer update $(JBZOO_COMPOSER_UPDATE_FLAGS)
+	@mkdir -pv ./build/images
 
 
 test-all: ##@Project Run all project tests at once
-	@mkdir -pv ./build/images
 	@make test
 	@make codestyle
