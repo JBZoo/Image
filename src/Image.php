@@ -218,7 +218,7 @@ final class Image
         }
 
         $dir = FS::dirName($filename);
-        if (\realpath($dir)) {
+        if (\realpath($dir) && \is_dir($dir)) {
             $this->internalSave($filename, $quality);
         } else {
             throw new Exception("Target directory \"{$dir}\" not exists");
