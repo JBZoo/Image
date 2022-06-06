@@ -26,20 +26,20 @@ use JBZoo\Utils\FS;
 class TestHelper
 {
     /**
-     * @param $filename
+     * @param string $filename
      * @return string
      */
-    public static function getActual($filename): string
+    public static function getActual(string $filename): string
     {
         $filename = self::camelCase2Human($filename);
         return FS::clean(__DIR__ . "/../build/images/{$filename}");
     }
 
     /**
-     * @param $filename
+     * @param string $filename
      * @return string
      */
-    public static function getExpected($filename)
+    public static function getExpected(string $filename): string
     {
         $filename = self::camelCase2Human($filename);
         return FS::clean(__DIR__ . "/expected/{$filename}");
@@ -49,7 +49,7 @@ class TestHelper
      * @param $filename
      * @return string
      */
-    public static function getOrig($filename)
+    public static function getOrig($filename): string
     {
         return FS::clean(__DIR__ . "/resources/{$filename}");
     }
@@ -94,7 +94,6 @@ class TestHelper
 
         if (strpos($input, '\\') !== false) {
             $input = explode('\\', $input);
-            reset($input);
             $input = end($input);
         }
 

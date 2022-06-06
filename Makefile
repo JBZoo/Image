@@ -23,5 +23,6 @@ update: ##@Project Install/Update all 3rd party dependencies
 
 
 test-all: ##@Project Run all project tests at once
+	@mkdir -pv ./build/images
 	@make test
 	@make codestyle
