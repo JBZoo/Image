@@ -443,12 +443,12 @@ final class Image
     /**
      * Load image resource
      *
-     * @param \GdImage|null $imageRes Image GD Resource
+     * @param \GdImage|string|null $imageRes Image GD Resource
      * @return $this
      *
      * @throws Exception
      */
-    public function loadResource(?\GdImage $imageRes): self
+    public function loadResource(\GdImage|string|null $imageRes): self
     {
         if (!($imageRes instanceof \GdImage)) {
             throw new Exception('Image is not GD resource!');
