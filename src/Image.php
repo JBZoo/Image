@@ -50,9 +50,9 @@ final class Image
 
     /**
      * GD Resource or bin data
-     * @var resource|null
+     * @var \GdImage|null
      */
-    protected $image;
+    protected ?\GdImage $image = null;
 
     /**
      * @var int
@@ -62,7 +62,7 @@ final class Image
     /**
      * @var string|null
      */
-    protected $filename;
+    protected ?string $filename = null;
 
     /**
      * @var array
@@ -92,13 +92,13 @@ final class Image
     /**
      * Image constructor.
      *
-     * @param resource|string|null $filename
+     * @param \GdImage|string|null $filename
      * @param bool                 $strict
      *
      * @throws Exception
      * @throws \JBZoo\Utils\Exception
      */
-    public function __construct($filename = null, bool $strict = false)
+    public function __construct(\GdImage|string $filename = null, bool $strict = false)
     {
         Helper::checkGD();
 
@@ -113,9 +113,9 @@ final class Image
             && FS::isFile($filename)
         ) {
             $this->loadFile($filename);
-        } elseif (\is_resource($filename) && self::isGdRes($filename)) {
+        } elseif ($filename instanceof \GdImage) {
             $this->loadResource($filename);
-        } elseif ($filename && \is_string($filename)) {
+        } elseif ($filename) {
             $this->loadString($filename, $strict);
         }
     }
@@ -164,9 +164,9 @@ final class Image
 
     /**
      * Get the current image resource
-     * @return resource|null
+     * @return \GdImage|null
      */
-    public function getImage()
+    public function getImage(): ?\GdImage
     {
         return $this->image;
     }
@@ -411,6 +411,7 @@ final class Image
             throw new Exception('Image file not found: ' . $filename);
         }
 
+
         $this->cleanup();
         $this->filename = $cleanFilename;
         $this->loadMeta();
@@ -442,14 +443,14 @@ final class Image
     /**
      * Load image resource
      *
-     * @param resource|null $imageRes Image GD Resource
+     * @param \GdImage|null $imageRes Image GD Resource
      * @return $this
      *
      * @throws Exception
      */
-    public function loadResource($imageRes): self
+    public function loadResource(?\GdImage $imageRes): self
     {
-        if (!self::isGdRes($imageRes)) {
+        if (!($imageRes instanceof \GdImage)) {
             throw new Exception('Image is not GD resource!');
         }
 
@@ -462,25 +463,25 @@ final class Image
     /**
      * Get metadata of image or base64 string
      *
-     * @param resource|string|null $image
+     * @param \GdImage|string|null $image
      * @param bool                 $strict
      *
      * @return $this
      * @throws Exception
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function loadMeta($image = null, bool $strict = false): self
+    protected function loadMeta(\GdImage|string $image = null, bool $strict = false): self
     {
         // Gather meta data
         if (null === $image && $this->filename) {
             if ($imageInfo = \getimagesize($this->filename)) {
                 $this->image = $this->imageCreate((string)($imageInfo['mime'] ?? ''));
             }
-        } elseif (\is_resource($image) && self::isGdRes($image)) {
+        } elseif ($image instanceof \GdImage) {
             $this->image = $image;
             $imageInfo = [
-                '0'    => (int)\imagesx($this->image),
-                '1'    => (int)\imagesy($this->image),
+                '0'    => \imagesx($this->image),
+                '1'    => \imagesy($this->image),
                 'mime' => self::DEFAULT_MIME,
             ];
         } elseif (\is_string($image)) {
@@ -543,7 +544,7 @@ final class Image
      */
     protected function destroyImage(): void
     {
-        if ($this->image && self::isGdRes($this->image)) {
+        if ($this->image instanceof \GdImage) {
             \imagedestroy($this->image);
             $this->image = null;
         }
@@ -567,11 +568,11 @@ final class Image
      * Create image resource
      *
      * @param string|null $format
-     * @return resource
+     * @return \GdImage
      *
      * @throws Exception
      */
-    protected function imageCreate(?string $format)
+    protected function imageCreate(?string $format): \GdImage
     {
         if (!$this->filename) {
             throw new Exception('Filename is undefined');
@@ -648,7 +649,7 @@ final class Image
      * @return $this
      * @throws Exception
      */
-    public function create(int $width, ?int $height = null, $color = null): self
+    public function create(int $width, ?int $height = null, array|string $color = null): self
     {
         $this->cleanup();
 
@@ -876,7 +877,7 @@ final class Image
         $newImage = \imagecreatetruecolor($croppedW, $croppedH);
         Helper::addAlpha($newImage);
 
-        if (\is_resource($newImage) && \is_resource($this->image)) {
+        if ($newImage instanceof \GdImage && $this->image instanceof \GdImage) {
             \imagecopyresampled($newImage, $this->image, 0, 0, $left, $top, $croppedW, $croppedH, $croppedW, $croppedH);
         } else {
             throw new Exception("Can't crop image, image resource is undefined");
@@ -891,16 +892,16 @@ final class Image
     }
 
     /**
-     * @param resource $newImage
+     * @param \GdImage $newImage
      */
-    protected function replaceImage($newImage): void
+    protected function replaceImage(\GdImage $newImage): void
     {
         if (!self::isSameResource($this->image, $newImage)) {
             $this->destroyImage();
 
             $this->image = $newImage;
-            $this->width = (int)\imagesx($this->image);
-            $this->height = (int)\imagesy($this->image);
+            $this->width = \imagesx($this->image);
+            $this->height = \imagesy($this->image);
         }
     }
 
@@ -942,7 +943,7 @@ final class Image
     /**
      * Overlay an image on top of another, works with 24-bit PNG alpha-transparency
      *
-     * @param string|Image $overlay     An image filename or a Image object
+     * @param string|Image $overlay     An image filename or an Image object
      * @param string       $position    center|top|left|bottom|right|top left|top right|bottom left|bottom right
      * @param float        $opacity     Overlay opacity 0-1 or 0-100
      * @param int          $globOffsetX Horizontal offset in pixels
@@ -952,7 +953,7 @@ final class Image
      * @throws Exception
      */
     public function overlay(
-        $overlay,
+        Image|string $overlay,
         string $position = 'bottom right',
         float $opacity = .4,
         int $globOffsetX = 0,
@@ -998,7 +999,7 @@ final class Image
      * @param mixed $filter
      * @return $this
      */
-    public function addFilter($filter): self
+    public function addFilter(mixed $filter): self
     {
         $args = \func_get_args();
         $args[0] = $this->image;
@@ -1017,7 +1018,7 @@ final class Image
             throw new Exception('Undefined filter type');
         }
 
-        if (self::isGdRes($newImage)) {
+        if ($newImage instanceof \GdImage) {
             $this->replaceImage($newImage);
         }
 
@@ -1112,29 +1113,16 @@ final class Image
     }
 
     /**
-     * @param resource|null $resource1
-     * @param resource|null $resource2
+     * @param \GdImage|null $resource1
+     * @param \GdImage|null $resource2
      * @return bool
      */
-    protected static function isSameResource($resource1 = null, $resource2 = null): bool
+    protected static function isSameResource(?\GdImage $resource1 = null, ?\GdImage $resource2 = null): bool
     {
         if (!$resource1 || !$resource2) {
             return false;
         }
 
-        if (self::isGdRes($resource1) && self::isGdRes($resource2)) {
-            return (int)$resource1 === (int)$resource2 && (int)$resource1 > 0;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param mixed $variable
-     * @return bool
-     */
-    public static function isGdRes($variable): bool
-    {
-        return \is_resource($variable) && \strtolower(\get_resource_type($variable)) === 'gd';
+        return \spl_object_id($resource1) === \spl_object_id($resource2);
     }
 }

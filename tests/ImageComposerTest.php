@@ -24,4 +24,5 @@ namespace JBZoo\PHPUnit;
  */
 class ImageComposerTest extends AbstractComposerTest
 {
+    protected $phpVersion = '^8.0';
 }

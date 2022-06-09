@@ -44,7 +44,7 @@ final class Text
     /**
      * Add text to an image
      *
-     * @param resource $image    GD resource
+     * @param \GdImage $image    GD resource
      * @param string   $text     Some text to output on image as watermark
      * @param string   $fontFile TTF font file path
      * @param array    $params   Additional render params
@@ -54,7 +54,7 @@ final class Text
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public static function render($image, string $text, string $fontFile, array $params = []): void
+    public static function render(\GdImage $image, string $text, string $fontFile, array $params = []): void
     {
         // Set vars
         $params = \array_merge(self::$default, $params);
@@ -69,8 +69,8 @@ final class Text
         $strokeSize = (int)$params['stroke-size'];
         $strokeSpacing = (int)$params['stroke-spacing'];
 
-        $imageWidth = (int)\imagesx($image);
-        $imageHeight = (int)\imagesy($image);
+        $imageWidth = \imagesx($image);
+        $imageHeight = \imagesy($image);
 
         $color = \is_string($params['color']) ? $params['color'] : (array)$params['color'];
         $strokeColor = \is_string($params['stroke-color']) ? $params['stroke-color'] : (array)$params['stroke-color'];
@@ -160,12 +160,12 @@ final class Text
     /**
      * Determine text color
      *
-     * @param resource     $image GD resource
-     * @param string|array $colors
+     * @param \GdImage     $image GD resource
+     * @param array|string $colors
      * @return array
      * @throws \JBZoo\Utils\Exception
      */
-    protected static function getColor($image, $colors): array
+    protected static function getColor(\GdImage $image, array|string $colors): array
     {
         $colors = (array)$colors;
 
@@ -212,12 +212,12 @@ final class Text
     /**
      * Compact args for imagettftext()
      *
-     * @param resource $image  A GD image object
+     * @param \GdImage $image  A GD image object
      * @param string   $text   The text to output
      * @param array    $font   [$fontfile, $fontsize, $color, $angle]
      * @param array    $coords [X,Y] Coordinate of the starting position
      */
-    protected static function internalRender($image, string $text, array $font, array $coords): void
+    protected static function internalRender(\GdImage $image, string $text, array $font, array $coords): void
     {
         [$coordX, $coordY] = $coords;
         [$file, $size, $color, $angle] = $font;
@@ -228,14 +228,19 @@ final class Text
     /**
      *  Same as imagettftext(), but allows for a stroke color and size
      *
-     * @param resource $image  A GD image object
+     * @param \GdImage $image  A GD image object
      * @param string   $text   The text to output
      * @param array    $font   [$fontfile, $fontsize, $color, $angle]
      * @param array    $coords [X,Y] Coordinate of the starting position
      * @param array    $stroke [$strokeSize, $strokeColor]
      */
-    protected static function renderStroke($image, string $text, array $font, array $coords, array $stroke): void
-    {
+    protected static function renderStroke(
+        \GdImage $image,
+        string $text,
+        array $font,
+        array $coords,
+        array $stroke
+    ): void {
         [$coordX, $coordY] = $coords;
         [$file, $size, $color, $angle] = $font;
         [$strokeSize, $strokeColor] = $stroke;
