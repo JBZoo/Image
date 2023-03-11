@@ -310,6 +310,7 @@ final class Image
 
     /**
      * Resize an image to the specified dimensions.
+     * @phan-suppress PhanPossiblyFalseTypeArgumentInternal
      */
     public function resize(float $width, float $height): self
     {
@@ -331,14 +332,16 @@ final class Image
             $transIndex = \imagecolortransparent($this->image);
             $palletSize = \imagecolorstotal($this->image);
 
-            if ($transIndex >= 0 && $transIndex < $palletSize) {
+            if ($transIndex > 0 && $transIndex < $palletSize) {
                 $trColor = \imagecolorsforindex($this->image, $transIndex);
 
                 $red   = 0;
                 $green = 0;
                 $blue  = 0;
 
-                if (\count($trColor) >= 3) {
+                $colorsTypeCount = 3;
+
+                if (\count($trColor) >= $colorsTypeCount) {
                     $red   = VarFilter::int($trColor['red']);
                     $green = VarFilter::int($trColor['green']);
                     $blue  = VarFilter::int($trColor['blue']);
@@ -576,14 +579,19 @@ final class Image
         $xOffset = (int)($offsetCoords[0] ?? null);
         $yOffset = (int)($offsetCoords[1] ?? null);
 
-        // Perform the overlay
-        if ($this->image === null || $overlay->getImage() === null) {
-            throw new Exception('Can\'t overlay image, image resource is undefined');
+        if ($this->image === null) {
+            throw new Exception("Can't overlay image, image resource is undefined");
         }
 
+        $overlayImage = $overlay->getImage();
+        if ($overlayImage === null) {
+            throw new Exception("Can't overlay image, overlay image resource is undefined");
+        }
+
+        // Perform the overlay
         Helper::imageCopyMergeAlpha(
             $this->image,
-            $overlay->getImage(),
+            $overlayImage,
             [$xOffset, $yOffset],
             [0, 0],
             [$overlay->getWidth(), $overlay->getHeight()],
@@ -716,9 +724,6 @@ final class Image
         throw new Exception('Image resource ins not defined');
     }
 
-    /**
-     * @phan-suppress-next-line PhanUndeclaredFunction
-     */
     private function saveWebP(string $filename, int $quality = self::DEFAULT_QUALITY): bool
     {
         if (!\function_exists('\imagewebp')) {
@@ -910,7 +915,6 @@ final class Image
         } elseif (Helper::isGif($format)) {
             $result = \imagecreatefromgif($this->filename);
         } elseif (\function_exists('imagecreatefromwebp') && Helper::isWebp($format)) {
-            /** @phan-suppress-next-line PhanUndeclaredFunction */
             $result = \imagecreatefromwebp($this->filename);
         } else {
             throw new Exception("Invalid image: {$this->filename}");
