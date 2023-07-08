@@ -816,7 +816,8 @@ final class Image
         if ($image === null && $this->filename !== null && $this->filename !== '') {
             $imageInfo = \getimagesize($this->filename);
             if ($imageInfo !== false) {
-                $this->image = $this->imageCreate((string)($imageInfo['mime'] ?? ''));
+                // @phan-suppress-next-line PhanPartialTypeMismatchArgument
+                $this->image = $this->imageCreate($imageInfo['mime']);
             }
         } elseif ($image instanceof \GdImage) {
             $this->image = $image;
@@ -854,9 +855,9 @@ final class Image
 
         // Set internal state
         if (isset($imageInfo) && \is_array($imageInfo)) {
-            $this->mime   = $imageInfo['mime'] ?? null;
-            $this->width  = (int)($imageInfo['0'] ?? 0);
-            $this->height = (int)($imageInfo['1'] ?? 0);
+            $this->mime   = $imageInfo['mime'];
+            $this->width  = $imageInfo['0'];
+            $this->height = $imageInfo['1'];
         }
         $this->exif   = $this->getExif();
         $this->orient = $this->getOrientation();
