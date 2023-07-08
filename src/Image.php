@@ -57,7 +57,7 @@ final class Image
     private ?string   $orient;
     private ?string   $mime;
 
-    public function __construct(\GdImage|string $filename = null, bool $strict = false)
+    public function __construct(\GdImage|string|null $filename = null, bool $strict = false)
     {
         Helper::checkGD();
 
@@ -227,7 +227,7 @@ final class Image
      * Load image resource.
      * @param null|\GdImage|string $imageRes Image GD Resource
      */
-    public function loadResource(\GdImage|string $imageRes = null): self
+    public function loadResource(\GdImage|string|null $imageRes = null): self
     {
         if (!$imageRes instanceof \GdImage) {
             throw new Exception('Image is not GD resource!');
@@ -280,7 +280,7 @@ final class Image
      * @param null|array|string $color  Hex color string, array(red, green, blue) or array(red, green, blue, alpha).
      *                                  Where red, green, blue - integers 0-255, alpha - integer 0-127
      */
-    public function create(int $width, ?int $height = null, array|string $color = null): self
+    public function create(int $width, ?int $height = null, array|string|null $color = null): self
     {
         $this->cleanup();
 
@@ -810,13 +810,14 @@ final class Image
      * Get metadata of image or base64 string.
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    private function loadMeta(\GdImage|string $image = null, bool $strict = false): self
+    private function loadMeta(\GdImage|string|null $image = null, bool $strict = false): self
     {
         // Gather meta data
         if ($image === null && $this->filename !== null && $this->filename !== '') {
             $imageInfo = \getimagesize($this->filename);
             if ($imageInfo !== false) {
-                $this->image = $this->imageCreate((string)($imageInfo['mime'] ?? ''));
+                // @phan-suppress-next-line PhanPartialTypeMismatchArgument
+                $this->image = $this->imageCreate($imageInfo['mime']);
             }
         } elseif ($image instanceof \GdImage) {
             $this->image = $image;
@@ -854,9 +855,9 @@ final class Image
 
         // Set internal state
         if (isset($imageInfo) && \is_array($imageInfo)) {
-            $this->mime   = $imageInfo['mime'] ?? null;
-            $this->width  = (int)($imageInfo['0'] ?? 0);
-            $this->height = (int)($imageInfo['1'] ?? 0);
+            $this->mime   = $imageInfo['mime'];
+            $this->width  = $imageInfo['0'];
+            $this->height = $imageInfo['1'];
         }
         $this->exif   = $this->getExif();
         $this->orient = $this->getOrientation();
