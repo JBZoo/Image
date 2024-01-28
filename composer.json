@@ -42,12 +42,12 @@
         "ext-exif"    : "*",
         "ext-ctype"   : "*",
 
-        "jbzoo/utils" : "^7.0",
-        "jbzoo/data"  : "^7.0"
+        "jbzoo/utils" : "^7.1",
+        "jbzoo/data"  : "^7.1"
     },
 
     "require-dev"       : {
-        "jbzoo/toolbox-dev" : "^7.0"
+        "jbzoo/toolbox-dev" : "^7.1"
     },
 
     "autoload"          : {
