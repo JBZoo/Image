@@ -1,19 +1,37 @@
 # JBZoo / Image
 
-[![CI](https://github.com/JBZoo/Image/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/JBZoo/Image/actions/workflows/main.yml?query=branch%3Amaster)    [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Image/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Image?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Image/coverage.svg)](https://shepherd.dev/github/JBZoo/Image)    [![Psalm Level](https://shepherd.dev/github/JBZoo/Image/level.svg)](https://shepherd.dev/github/JBZoo/Image)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/image/badge)](https://www.codefactor.io/repository/github/jbzoo/image/issues)    
+[![CI](https://github.com/JBZoo/Image/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/JBZoo/Image/actions/workflows/main.yml?query=branch%3Amaster)    [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Image/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Image?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Image/coverage.svg)](https://shepherd.dev/github/JBZoo/Image)    [![Psalm Level](https://shepherd.dev/github/JBZoo/Image/level.svg)](https://shepherd.dev/github/JBZoo/Image)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/image/badge)](https://www.codefactor.io/repository/github/jbzoo/image/issues)
 [![Stable Version](https://poser.pugx.org/jbzoo/image/version)](https://packagist.org/packages/jbzoo/image/)    [![Total Downloads](https://poser.pugx.org/jbzoo/image/downloads)](https://packagist.org/packages/jbzoo/image/stats)    [![Dependents](https://poser.pugx.org/jbzoo/image/dependents)](https://packagist.org/packages/jbzoo/image/dependents?order_by=downloads)    [![GitHub License](https://img.shields.io/github/license/jbzoo/image)](https://github.com/JBZoo/Image/blob/master/LICENSE)
 
+A powerful and intuitive PHP library for image manipulation that provides an object-oriented way to work with images as simply as possible. Built on top of PHP's GD extension with support for modern PHP versions (8.2+).
+
+## Features
+
+- **Multiple Image Formats**: GIF, JPEG, PNG, and WEBP support
+- **Flexible Resizing**: Free resize, fit to width/height, best fit, and smart thumbnails
+- **Image Filters**: 15+ built-in filters including grayscale, sepia, blur, pixelate, and more
+- **Text Overlays**: Add text with custom fonts, colors, positioning, and effects
+- **Watermarking**: Overlay images with transparency and positioning control
+- **Format Conversion**: Convert between different image formats on save
+- **EXIF Handling**: Automatic orientation correction and EXIF data preservation
+- **Method Chaining**: Fluent interface for readable code
+- **Memory Efficient**: Proper resource management and cleanup
 
 
-Package provides object-oriented way to manipulate with images as simple as possible.
+## Requirements
 
+- PHP 8.2 or higher
+- GD extension (with JPEG, PNG, GIF support)
+- EXIF extension (for automatic orientation)
+- CTYPE extension
 
-### Install
+## Installation
+
 ```sh
 composer require jbzoo/image
 ```
 
-### Example
+## Quick Start
 
 ```php
 use JBZoo\Image\Image;
@@ -25,23 +43,9 @@ $img = (new Image('./example/source-image.jpg'))
     ->saveAs('./example/dist-image.png');
 ```
 
-That block loads `source-image.jpg`, flip it horizontally, rotate it 90 degrees clockwise,
-shrink it to fit within a 320x240 box, apply a sepia effect, convert it to a PNG, and save it to `dist-image.png` with other format!
+This example loads `source-image.jpg`, flips it horizontally, adds text with a custom font, creates a 320×240 thumbnail, and saves it as a PNG.
 
-
-With this class, you can effortlessly:
- * Resize images (free resize, resize to width, resize to height, resize to fit)
- * Crop images
- * Flip/rotate/adjust orientation
- * Adjust brightness & contrast
- * Desaturate, colorize, pixelate, blur, etc.
- * Overlay one image onto another (watermarking)
- * Add text using a font of your choice
- * Convert between GIF, JPEG, PNG and WEBP formats
- * Strip EXIF data (Just save it!)
-
-
-### Usage
+## Comprehensive Usage
 ```php
 use JBZoo\Image\Image;
 use JBZoo\Image\Filter;
@@ -113,7 +117,7 @@ try { // Error handling
 ```
 
 
-### Methods to create Image objects
+## Image Creation Methods
 ```php
 // Filename
 $img = new Image('./path/to/image.png');
@@ -134,7 +138,7 @@ $img = new Image($imgRes);
 ```
 
 
-### Other utility methods
+## Utility Methods
 ```php
 $img = new Image($_SERVER['DOCUMENT_ROOT'] . '/resources/butterfly.jpg');
 
@@ -190,7 +194,7 @@ $imgInfo = [
 ```
 
 
-### Add text on image (filter)
+## Text Overlays
 ```php
 $img = new Image('./resources/butterfly.jpg');
 $img->addFilter(
@@ -218,14 +222,26 @@ $img->addFilter(
 ```
 
 
-### Unit testing and Code Quality
+## Development
+
+### Setup
 ```sh
-make update
-make test-all
+make update    # Install/update dependencies
 ```
 
+### Testing
+```sh
+make test      # Run PHPUnit tests
+make test-all  # Run tests and code quality checks
+```
 
-### License
+### Code Quality
+```sh
+make codestyle # Run linters and code style checks
+```
+
+## License
+
 MIT
 
 
@@ -236,6 +252,6 @@ MIT
 - [Composer-Graph](https://github.com/JBZoo/Composer-Graph) - Dependency graph visualization for composer.json (PHP + Composer) based on mermaid-js.
 - [Mermaid-PHP](https://github.com/JBZoo/Mermaid-PHP) - Generate diagrams and flowcharts with the help of the mermaid script language.
 - [Utils](https://github.com/JBZoo/Utils) - Collection of useful PHP functions, mini-classes, and snippets for every day.
-- [Data](https://github.com/JBZoo/Data) - Extended implementation of ArrayObject. Use files as config/array. 
+- [Data](https://github.com/JBZoo/Data) - Extended implementation of ArrayObject. Use files as config/array.
 - [Retry](https://github.com/JBZoo/Retry) - Tiny PHP library providing retry/backoff functionality with multiple backoff strategies and jitter support.
 - [SimpleTypes](https://github.com/JBZoo/SimpleTypes) - Converting any values and measures - money, weight, exchange rates, length, ...

@@ -117,7 +117,8 @@ final class Text
                     }
                 }
             } else {
-                $rgba        = Helper::normalizeColor($strokeColor);
+                $rgba = Helper::normalizeColor($strokeColor);
+                // @phpstan-ignore-next-line
                 $strokeColor = \imagecolorallocatealpha($image, $rgba[0], $rgba[1], $rgba[2], $rgba[3]);
                 self::renderStroke(
                     $image,
@@ -164,7 +165,8 @@ final class Text
         $result = [];
 
         foreach ($colors as $color) {
-            $rgba     = Helper::normalizeColor($color);
+            $rgba = Helper::normalizeColor($color);
+            // @phpstan-ignore-next-line
             $result[] = \imagecolorallocatealpha($image, $rgba[0], $rgba[1], $rgba[2], $rgba[3]);
         }
 

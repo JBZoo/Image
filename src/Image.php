@@ -57,7 +57,7 @@ final class Image
     private ?string   $orient;
     private ?string   $mime;
 
-    public function __construct(null|\GdImage|string $filename = null, bool $strict = false)
+    public function __construct(\GdImage|string|null $filename = null, bool $strict = false)
     {
         Helper::checkGD();
 
@@ -140,7 +140,9 @@ final class Image
         $quality ??= $this->quality;
 
         if ($this->filename !== null && $this->filename !== '') {
-            $this->internalSave($this->filename, $quality);
+            if (!$this->internalSave($this->filename, $quality)) {
+                throw new Exception("File {$this->filename} not saved");
+            }
 
             return $this;
         }
@@ -227,7 +229,7 @@ final class Image
      * Load image resource.
      * @param null|\GdImage|string $imageRes Image GD Resource
      */
-    public function loadResource(null|\GdImage|string $imageRes = null): self
+    public function loadResource(\GdImage|string|null $imageRes = null): self
     {
         if (!$imageRes instanceof \GdImage) {
             throw new Exception('Image is not GD resource!');
@@ -280,7 +282,7 @@ final class Image
      * @param null|array|string $color  Hex color string, array(red, green, blue) or array(red, green, blue, alpha).
      *                                  Where red, green, blue - integers 0-255, alpha - integer 0-127
      */
-    public function create(int $width, ?int $height = null, null|array|string $color = null): self
+    public function create(int $width, ?int $height = null, array|string|null $color = null): self
     {
         $this->cleanup();
 
@@ -289,7 +291,7 @@ final class Image
         $this->width  = VarFilter::int($width);
         $this->height = VarFilter::int($height);
 
-        $newImageRes = \imagecreatetruecolor($this->width, $this->height);
+        $newImageRes = \imagecreatetruecolor($this->width, $this->height); // @phpstan-ignore-line
         if ($newImageRes !== false) {
             $this->image = $newImageRes;
         } else {
@@ -318,7 +320,7 @@ final class Image
         $height = VarFilter::int($height);
 
         // Generate new GD image
-        $newImage = \imagecreatetruecolor($width, $height);
+        $newImage = \imagecreatetruecolor($width, $height); // @phpstan-ignore-line
         if ($newImage === false) {
             throw new Exception("Can't create new image resource");
         }
@@ -341,13 +343,13 @@ final class Image
 
                 $colorsTypeCount = 3;
 
-                if (\count($trColor) >= $colorsTypeCount) {
+                if (\count($trColor) >= $colorsTypeCount) { // @phpstan-ignore-line
                     $red   = VarFilter::int($trColor['red']);
                     $green = VarFilter::int($trColor['green']);
                     $blue  = VarFilter::int($trColor['blue']);
                 }
 
-                $transIndex = (int)\imagecolorallocate($newImage, $red, $green, $blue);
+                $transIndex = (int)\imagecolorallocate($newImage, $red, $green, $blue); // @phpstan-ignore-line
 
                 \imagefill($newImage, 0, 0, $transIndex);
                 \imagecolortransparent($newImage, $transIndex);
@@ -443,6 +445,7 @@ final class Image
 
     /**
      * Fit to height (proportionally resize to specified height).
+     * @psalm-suppress PossiblyUnusedReturnValue
      */
     public function fitToHeight(int $height): self
     {
@@ -454,6 +457,7 @@ final class Image
 
     /**
      * Fit to width (proportionally resize to specified width).
+     * @psalm-suppress PossiblyUnusedReturnValue
      */
     public function fitToWidth(int $width): self
     {
@@ -490,7 +494,7 @@ final class Image
         $croppedH = $bottom - $top;
 
         // Perform crop
-        $newImage = \imagecreatetruecolor($croppedW, $croppedH);
+        $newImage = \imagecreatetruecolor($croppedW, $croppedH); // @phpstan-ignore-line
         if ($newImage === false) {
             throw new Exception("Can't crop image, imagecreatetruecolor() failed");
         }
@@ -612,7 +616,7 @@ final class Image
         if (\is_string($filter)) {
             if (\method_exists(Filter::class, $filter)) {
                 /** @var \Closure $filterFunc */
-                $filterFunc = [Filter::class, $filter];
+                $filterFunc = [Filter::class, $filter]; // @phpstan-ignore-line
                 $newImage   = $filterFunc(...$args);
             } else {
                 throw new Exception("Undefined Image Filter: {$filter}");
@@ -810,7 +814,7 @@ final class Image
      * Get metadata of image or base64 string.
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    private function loadMeta(null|\GdImage|string $image = null, bool $strict = false): self
+    private function loadMeta(\GdImage|string|null $image = null, bool $strict = false): self
     {
         // Gather meta data
         if ($image === null && $this->filename !== null && $this->filename !== '') {
