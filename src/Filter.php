@@ -246,6 +246,7 @@ final class Filter
         $angle = Helper::rotate($angle);
         $rgba  = Helper::normalizeColor($bgColor);
 
+        // @phpstan-ignore-next-line
         $newBgColor = (int)\imagecolorallocatealpha($image, $rgba[0], $rgba[1], $rgba[2], $rgba[3]);
         $newImage   = \imagerotate($image, -$angle, $newBgColor);
         if ($newImage === false) {
@@ -305,7 +306,10 @@ final class Filter
         $width  = \imagesx($image);
         $height = \imagesy($image);
 
-        $rgba      = Helper::normalizeColor($color);
+        // @phpstan-ignore-next-line
+        $rgba = Helper::normalizeColor($color);
+
+        // @phpstan-ignore-next-line
         $fillColor = (int)\imagecolorallocatealpha($image, $rgba[0], $rgba[1], $rgba[2], $rgba[3]);
 
         Helper::addAlpha($image, false);
@@ -345,6 +349,7 @@ final class Filter
         $posX2 = $width - 1;
         $posY2 = $height - 1;
 
+        // @phpstan-ignore-next-line
         $color = (int)\imagecolorallocatealpha($image, $rgba[0], $rgba[1], $rgba[2], $rgba[3]);
 
         for ($i = 0; $i < $size; $i++) {

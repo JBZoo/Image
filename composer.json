@@ -37,17 +37,17 @@
     "prefer-stable"     : true,
 
     "require"           : {
-        "php"         : "^8.1",
+        "php"         : "^8.2",
         "ext-gd"      : "*",
         "ext-exif"    : "*",
         "ext-ctype"   : "*",
 
-        "jbzoo/utils" : "^7.1",
-        "jbzoo/data"  : "^7.1"
+        "jbzoo/utils" : "^7.3",
+        "jbzoo/data"  : "^7.2"
     },
 
     "require-dev"       : {
-        "jbzoo/toolbox-dev" : "^7.1"
+        "jbzoo/toolbox-dev" : "^7.2"
     },
 
     "autoload"          : {
