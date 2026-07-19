@@ -25,3 +25,10 @@ if ($autoload = \realpath(ROOT_PATH . '/vendor/autoload.php')) {
     echo 'Please execute "composer update" !' . \PHP_EOL;
     exit(1);
 }
+
+// Tests write generated images to ./build/images. The Makefile "update" target also creates it,
+// but running PHPUnit directly (as the hermetic gate does) must not depend on that side effect.
+$buildImagesDir = ROOT_PATH . '/build/images';
+if (!\is_dir($buildImagesDir)) {
+    \mkdir($buildImagesDir, 0777, true);
+}

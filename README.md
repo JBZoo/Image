@@ -1,9 +1,17 @@
 # JBZoo / Image
 
-[![CI](https://github.com/JBZoo/Image/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/JBZoo/Image/actions/workflows/main.yml?query=branch%3Amaster)    [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Image/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Image?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Image/coverage.svg)](https://shepherd.dev/github/JBZoo/Image)    [![Psalm Level](https://shepherd.dev/github/JBZoo/Image/level.svg)](https://shepherd.dev/github/JBZoo/Image)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/image/badge)](https://www.codefactor.io/repository/github/jbzoo/image/issues)
-[![Stable Version](https://poser.pugx.org/jbzoo/image/version)](https://packagist.org/packages/jbzoo/image/)    [![Total Downloads](https://poser.pugx.org/jbzoo/image/downloads)](https://packagist.org/packages/jbzoo/image/stats)    [![Dependents](https://poser.pugx.org/jbzoo/image/dependents)](https://packagist.org/packages/jbzoo/image/dependents?order_by=downloads)    [![GitHub License](https://img.shields.io/github/license/jbzoo/image)](https://github.com/JBZoo/Image/blob/master/LICENSE)
+[![CI](https://github.com/JBZoo/Image/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/JBZoo/Image/actions/workflows/main.yml?query=branch%3Amaster)
+[![Coverage Status](https://coveralls.io/repos/github/JBZoo/Image/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Image?branch=master)
+[![Psalm Coverage](https://shepherd.dev/github/JBZoo/Image/coverage.svg)](https://shepherd.dev/github/JBZoo/Image)
+[![Psalm Level](https://shepherd.dev/github/JBZoo/Image/level.svg)](https://shepherd.dev/github/JBZoo/Image)
+[![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/image/badge)](https://www.codefactor.io/repository/github/jbzoo/image/issues)
 
-A powerful and intuitive PHP library for image manipulation that provides an object-oriented way to work with images as simply as possible. Built on top of PHP's GD extension with support for modern PHP versions (8.2+).
+[![Stable Version](https://poser.pugx.org/jbzoo/image/version)](https://packagist.org/packages/jbzoo/image/)
+[![Total Downloads](https://poser.pugx.org/jbzoo/image/downloads)](https://packagist.org/packages/jbzoo/image/stats)
+[![Dependents](https://poser.pugx.org/jbzoo/image/dependents)](https://packagist.org/packages/jbzoo/image/dependents?order_by=downloads)
+[![GitHub License](https://img.shields.io/github/license/jbzoo/image)](https://github.com/JBZoo/Image/blob/master/LICENSE)
+
+A powerful and intuitive PHP library for image manipulation that provides an object-oriented way to work with images as simply as possible. Built on top of PHP's GD extension with support for modern PHP versions (8.3+).
 
 ## Features
 
@@ -20,7 +28,7 @@ A powerful and intuitive PHP library for image manipulation that provides an obj
 
 ## Requirements
 
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - GD extension (with JPEG, PNG, GIF support)
 - EXIF extension (for automatic orientation)
 - CTYPE extension

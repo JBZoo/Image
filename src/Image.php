@@ -312,7 +312,6 @@ final class Image
 
     /**
      * Resize an image to the specified dimensions.
-     * @phan-suppress PhanPossiblyFalseTypeArgumentInternal
      */
     public function resize(float $width, float $height): self
     {
@@ -445,7 +444,6 @@ final class Image
 
     /**
      * Fit to height (proportionally resize to specified height).
-     * @psalm-suppress PossiblyUnusedReturnValue
      */
     public function fitToHeight(int $height): self
     {
@@ -457,7 +455,6 @@ final class Image
 
     /**
      * Fit to width (proportionally resize to specified width).
-     * @psalm-suppress PossiblyUnusedReturnValue
      */
     public function fitToWidth(int $width): self
     {
@@ -882,7 +879,6 @@ final class Image
     private function destroyImage(): void
     {
         if ($this->image instanceof \GdImage) {
-            \imagedestroy($this->image);
             $this->image = null;
         }
     }

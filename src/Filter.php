@@ -220,8 +220,6 @@ final class Filter
                     $opacity,
                 );
 
-                \imagedestroy($image);
-
                 return $newImage;
             }
 

@@ -341,9 +341,7 @@ class ImageTest extends PHPUnit
         isSame('', $img->getUrl());
     }
 
-    /**
-     * @requires PHP 5.4
-     */
+    #[\PHPUnit\Framework\Attributes\RequiresPhp('>= 5.4')]
     public function testOpenAsString(): void
     {
         $imgStr = 'R0lGODlhEAAQAOZeAHBwcKCgoOraIvDw8Mu9Hi4rBvPFJvTKJpyRF/bXJfPAJ/jeJU5IC0B'
@@ -499,9 +497,7 @@ class ImageTest extends PHPUnit
         $img->loadResource('');
     }
 
-    /**
-     * @requires PHP 5.4
-     */
+    #[\PHPUnit\Framework\Attributes\RequiresPhp('>= 5.4')]
     public function testInvalidImageString(): void
     {
         try {
