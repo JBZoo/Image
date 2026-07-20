@@ -81,7 +81,7 @@ Filters are applied via `addFilter()` method with filter name and parameters. Th
 ## CI/CD Configuration
 
 The project uses GitHub Actions with three main jobs:
-- **PHPUnit**: Runs tests across PHP 8.2, 8.3, 8.4 with different composer flags
+- **PHPUnit**: Runs tests across PHP 8.3, 8.4, 8.5 with different composer flags
 - **Linters**: Runs code quality checks across PHP versions
 - **Reports**: Generates coverage and static analysis reports
 
